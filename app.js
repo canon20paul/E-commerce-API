@@ -4,20 +4,32 @@ require('express-async-errors');
 const express = require('express');
 const app = express()
 
+//rest of packages
+const morgan = require('morgan');
+const cookieParser = require('cookie-parser')
+
+//database
+const connectDB = require('./db/connect')
+
 // routers
 const authRouter = require('./routes/authRoutes')
 
 
-//database
-const connectDB = require('./db/connect')
 //middleware
 const notFoundMiddleware = require('./middleware/not-found')
 const errorHandlerMiddleware = require('./middleware/error-handler')
 
-app.use(express.json())
+app.use(express.json());
+app.use(cookieParser(process.env.JWT_SECRET));
 
 app.get('/', (req, res) => {
+    console.log(req.cookies);
     res.send('E-commerce API')
+})
+
+app.get('/api/v1', (req, res) => {
+    console.log(req.signedCookies);
+    res.send('E-commerce API apiiiiii')
 })
 
 
