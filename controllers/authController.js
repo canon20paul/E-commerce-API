@@ -19,8 +19,7 @@ const register = async (req, res) => {
     const user = await User.create({ email, name, password, role }) 
 
     const tokenUser = {name: user.name, userId: user._id, role: user.role};
-    
-attachCookiesToResponse({res, user: tokenUser})
+    attachCookiesToResponse({res, user: tokenUser})
     res.status(StatusCodes.CREATED).json({ user: tokenUser})
     
 };
@@ -41,9 +40,17 @@ const login = async (req, res) => {
         throw new CustomError.UnauthenticatedError('Invalid Credentials');
     }
 
+    const tokenUser = { name: user.name, userId: user._id, role: user.role };
+    attachCookiesToResponse({ res, user: tokenUser })
+    res.status(StatusCodes.CREATED).json({ user: tokenUser })
+
 };
 const logout = async (req, res) => { 
-    res.send('logout User')
+    res.cookie('token','logout', {
+        httpOnly: true,
+        expires: new Date(Date.now() ),
+    });
+    res.status(StatusCodes.OK).json({ msg: 'user logged out!'});
 };
 
 
