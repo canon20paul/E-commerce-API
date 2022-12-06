@@ -1,54 +1,49 @@
 const User = require('../models/user');
-const {StatusCodes} =require('http-status-codes')
-const CustomError = require('../errors')
-const jwt = require('jsonwebtoken')
-const  {attachCookiesToResponse, createTokenUser} = require( '../utils')
-
+const {StatusCodes} =require('http-status-codes');
+const CustomError = require('../errors');
+const  {attachCookiesToResponse, createTokenUser} = require( '../utils');
 
 const register = async (req, res) => {
-    const {email, name, password} = req.body;
+const {email, name, password} = req.body;
 
-    const emailAlreadyExists = await User.findOne({email})
+    const emailAlreadyExists = await User.findOne({email});
     if(emailAlreadyExists){
-        throw new CustomError.BadRequestError('Email Already Exists')
+        throw new CustomError.BadRequestError('Email Already Exists');
     }
 
     //First registered User automatically becomes an admin
     const isFirstAccount = (await User.countDocuments({}))=== 0;
     const role = isFirstAccount ? 'admin' : "user" ;
-    const user = await User.create({ email, name, password, role }) 
 
+    const user = await User.create({ email, name, password, role });
     const tokenUser = createTokenUser(user);
-    attachCookiesToResponse({res, user: tokenUser})
-    res.status(StatusCodes.CREATED).json({ user: tokenUser})
-    
+    attachCookiesToResponse({res, user: tokenUser});
+    res.status(StatusCodes.CREATED).json({ user: tokenUser});
 };
-const login = async (req, res) => {
-    //Email and Password validation
-    const {email,password} = req.body
+const login = async (req, res) => { //Email and Password validation
+        const {email,password} = req.body;
+
     if(!email || !password){
-        throw new CustomError.BadRequestError('Please Provide email anf password')
+        throw new CustomError.BadRequestError('Please Provide email anf password');
     }
-    //Check email match
-    const user = await User.findOne({email});
+    const user = await User.findOne({ email });  //Check email match
+
     if(!user){
-        throw new CustomError.UnauthenticatedError('Invalid Credentials')
+        throw new CustomError.UnauthenticatedError('Invalid Credentials');
     }
-    //check Password match
-    const isPasswordCorrect = await user.comparePassword(password);
+       const isPasswordCorrect = await user.comparePassword(password);  //check Password match
     if(!isPasswordCorrect){
         throw new CustomError.UnauthenticatedError('Invalid Credentials');
     }
-
     const tokenUser = createTokenUser(user);
-    attachCookiesToResponse({ res, user: tokenUser })
-    res.status(StatusCodes.OK).json({ user: tokenUser })
+    attachCookiesToResponse({ res, user: tokenUser });
 
+    res.status(StatusCodes.OK).json({ user: tokenUser });
 };
 const logout = async (req, res) => { 
     res.cookie('token','logout', {
         httpOnly: true,
-        expires: new Date(Date.now() ),
+        expires: new Date(Date.now() + 1000 ),
     });
     res.status(StatusCodes.OK).json({ msg: 'user logged out!'});
 };
