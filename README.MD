@@ -1,7 +1,19 @@
-## Hosted Project
+# E-Commerce API  Hosted Project
 
-[E-Commerce API Heroku URL](https://e-commerce-api-10.herokuapp.com/)
+[E-Commerce API @ cyclic.sh URL](https://e-commerce-api-canon.cyclic.app/)
 
+#### Simple E-commerce API with:-
+
+- [] User Registration
+- [] User Login
+- [] User Authentication and Authorization with cookies
+- [] CRUD Excution of:-
+      -> Users
+      -> Products
+      -> Reviews
+      -> Orders
+
+## Process of creating API
 #### Setup Basic Express Server
 
 - [] import express and assign to variable
