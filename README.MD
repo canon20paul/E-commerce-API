@@ -367,9 +367,9 @@
 - [] express-mongo-sanitize
 - [] cors (cookies!!!!)
 
-#### Deploy on Heroku
+#### Deploy on cyclic.sh
 
-- [] heroku account and heroku cli
+- [] Prepare project Root File
 - [] remove/copy from the main repo
 - [] add dev command "nodemon app.js"
 - [] change start to "node app.js"
@@ -381,8 +381,11 @@
 - [] git init
 - [] git add .
 - [] git commit -m "initial commit"
-- [] heroku login
-- [] heroku create "App Name"
-- [] git remote -v
-- [] setup env vars in GUI
-- [] git push heroku master/main
+- [] cyclic.sh login / Create account with github profile.
+- [] Select Link Your Own Tab and search for repo at Github in the Search Bar
+- [] Connect
+- [] Deployment should be ready below a minute
+- [] configure .env file as key value pairs and save
+- [] click on your newly created link
+- [] Your Live
+- [] ####COMPLETED FINALLY
